@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->longText('description')->nullable();
-            $table->foreignId('product_category_id')->nullable()->constrained('product_categories');
             $table->nestedSet();
             $table->timestamps();
         });
