@@ -45,14 +45,24 @@ class ProductResource extends Resource
                     ->relationship('variants')
                     ->schema([
                         Forms\Components\TextInput::make('sku'),
-                        Forms\Components\Fieldset::make('value')
-                            ->relationship('value')
-                            ->schema([
-                                Forms\Components\Select::make('product_option_id')
-                                    ->relationship('option', 'name'),
-                                Forms\Components\TextInput::make('name')
-                            ]),
-                        ]),
+                        Forms\Components\Select::make('product_option_id')
+                            ->options(ProductOption::all()->pluck('name', 'id'))
+                            ->reactive()
+                            ->afterStateUpdated(function (callable $set) {
+                                $set('name',null);
+                                }),
+                        Forms\Components\Select::make('product_option_value_id')                     
+                            ->options(function (callable $get) {
+                                $optionValues = ProductOption::find($get('product_option_id'));
+                                    if(!$optionValues) {
+                                        return [];
+                                        }
+                                        return $optionValues->values->pluck('name','id');
+                                    })
+                            ->reactive()
+                        ])
+                        ->grid(2)
+                        ->columnSpan('full'),
                 ]);
 
                 

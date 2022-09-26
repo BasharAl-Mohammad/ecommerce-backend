@@ -18,6 +18,6 @@ class ProductVariant extends Model
 
     public function value()
     {
-        return $this->hasOne(ProductOptionValue::class);
+        return $this->belongsTo(ProductOptionValue::class);
     }
 }

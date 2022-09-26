@@ -25,6 +25,11 @@ class ProductOptionResource extends Resource
             ->schema([
                 Forms\Components\Card::make()->schema([
                     Forms\Components\TextInput::make('name'),
+                    Forms\Components\Repeater::make('Values')
+                        ->relationship('values')
+                        ->schema([
+                            Forms\Components\TextInput::make('name')
+                    ])
                 ])
             ]);
     }
