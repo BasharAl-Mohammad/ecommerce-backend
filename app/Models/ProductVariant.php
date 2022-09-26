@@ -13,16 +13,11 @@ class ProductVariant extends Model
 
     public function product()
     {
-        return $this->belongsTo(Product::class)->withTrashed();
+        return $this->belongsTo(Product::class);
     }
 
-    public function values()
+    public function value()
     {
-        return $this->belongsToMany(
-            ProductOptionValue::class,
-            "product_option_value_product_variant",
-            'variant_id',
-            'value_id'
-        )->withTimestamps();
+        return $this->hasOne(ProductOptionValue::class);
     }
 }
