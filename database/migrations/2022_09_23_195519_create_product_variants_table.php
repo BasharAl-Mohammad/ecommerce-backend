@@ -16,16 +16,16 @@ return new class extends Migration
         Schema::create('product_variants', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained('products');
-            $table->integer('unit_quantity')->unsigned()->index()->default(1);
+            $table->integer('unit_quantity')->unsigned()->nullable()->index()->default(1);
             $table->string('sku')->nullable()->index();
             $table->string('gtin')->nullable()->index();
             $table->string('mpn')->nullable()->index();
             $table->string('ean')->nullable()->index();
             // $table->dimensions();
-            $table->boolean('shippable')->default(true)->index();
-            $table->integer('stock')->default(0)->index();
-            $table->integer('backorder')->default(0)->index();
-            $table->string('purchasable')->default('always')->index();
+            $table->boolean('shippable')->nullable()->default(true)->index();
+            $table->integer('stock')->nullable()->default(0)->index();
+            $table->integer('backorder')->nullable()->default(0)->index();
+            $table->string('purchasable')->nullable()->default('always')->index();
             $table->timestamps();
             $table->softDeletes();
         });

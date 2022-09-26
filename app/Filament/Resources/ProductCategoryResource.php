@@ -17,7 +17,9 @@ class ProductCategoryResource extends Resource
 {
     protected static ?string $model = ProductCategory::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-selector';
+
+    protected static ?string $navigationGroup = 'Products Management';
 
     public static function form(Form $form): Form
     {
@@ -56,7 +58,7 @@ class ProductCategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ChildrenRelationManager::class,
         ];
     }
     
