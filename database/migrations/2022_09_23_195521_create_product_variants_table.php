@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('product_variants', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->nullable()->constrained('products');
-            $table->foreignId('product_option_value_id')->nullable()->constrained('product_option_values');
+            // $table->foreignId('product_option_value_id')->nullable()->constrained('product_option_values');
             $table->integer('unit_quantity')->unsigned()->nullable()->index()->default(1);
             $table->string('sku')->nullable()->index();
             $table->string('gtin')->nullable()->index();
