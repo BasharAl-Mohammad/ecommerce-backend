@@ -22,7 +22,16 @@ return new class extends Migration
             $table->string('gtin')->nullable()->index();
             $table->string('mpn')->nullable()->index();
             $table->string('ean')->nullable()->index();
-            // $table->dimensions();
+            $table->decimal('length_value')->nullable();
+            $table->string('length_unit')->nullable();
+            $table->decimal('width_value')->nullable();
+            $table->string('width_unit')->nullable();
+            $table->decimal('height_value')->nullable();
+            $table->string('height_unit')->nullable();
+            $table->decimal('weight_value')->nullable();
+            $table->string('weight_unit')->nullable();
+            $table->decimal('volume_value')->nullable();
+            $table->string('volume_unit')->nullable();
             $table->boolean('shippable')->nullable()->default(true)->index();
             $table->integer('stock')->nullable()->default(0)->index();
             $table->integer('backorder')->nullable()->default(0)->index();
