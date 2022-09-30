@@ -7,13 +7,21 @@
     "require": {
         "php": "^8.0.2",
         "cartalyst/converter": "^7.0",
+        "colinodell/json5": "^2.2",
         "doctrine/dbal": "^3.4",
         "filament/filament": "^2.0",
+        "filament/spatie-laravel-media-library-plugin": "^2.0",
+        "filament/spatie-laravel-tags-plugin": "^2.0",
+        "gasparesganga/php-shapefile": "^3.4",
         "guzzlehttp/guzzle": "^7.2",
+        "icetalker/filament-table-repeater": "^0.1.3",
         "kalnoy/nestedset": "^6.0",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
-        "laravel/tinker": "^2.7"
+        "laravel/tinker": "^2.7",
+        "pragmarx/coollection": "^0.8.1",
+        "psr/simple-cache": "^3.0",
+        "spatie/laravel-tags": "^4.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -21,8 +29,10 @@
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
-        "phpunit/phpunit": "^9.5.10",
-        "spatie/laravel-ignition": "^1.0"
+        "orchestra/testbench": "^7.7",
+        "phpunit/phpunit": "^9.5",
+        "spatie/laravel-ignition": "^1.0",
+        "squizlabs/php_codesniffer": "^3.7"
     },
     "autoload": {
         "psr-4": {

@@ -2,30 +2,37 @@
 
 namespace App\Filament\Resources;
 
+use Closure;
 use Filament\Forms;
 use Filament\Tables;
+use PhpOption\Option;
 use App\Models\Product;
 use Filament\Resources\Form;
+use App\Models\ProductOption;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
+use App\Models\ProductOptionValue;
+use Filament\Forms\FormsComponent;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Section;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\SpatieTagsInput;
 use App\Filament\Resources\ProductResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Doctrine\DBAL\Driver\Mysqli\Initializer\Options;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Resources\ProductResource\RelationManagers;
-use App\Models\ProductOption;
-use App\Models\ProductOptionValue;
-use Closure;
-use Filament\Forms\Components\Section;
-use Filament\Forms\FormsComponent;
-use PhpOption\Option;
+use Icetalker\FilamentTableRepeater\Forms\Components\TableRepeater;
 
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
+
 
     public static function form(Form $form): Form
     {
@@ -34,24 +41,22 @@ class ProductResource extends Resource
                         ->tabs([
                             Forms\Components\Tabs\Tab::make('Basic Information')
                                 ->schema([
-                                    Forms\Components\Fieldset::make('Product Information')->schema([
-                                        Forms\Components\TextInput::make('name')->columnSpan('full'),
-                                        Forms\Components\Textarea::make('description')->columnSpan('full'),
-                                        Forms\Components\Toggle::make('status')->label('Published'),
+                                    Forms\Components\Select::make('Brand')
+                                        ->relationship('brand','name')
+                                        ->columnSpan('full'),
+                                    Forms\Components\Select::make('Product Category')
+                                        ->relationship('productCategory','name')
+                                        ->columnSpan('full'),
+                                    SpatieTagsInput::make('tags')->columnSpan('full')
                                     ]),
-                                    Forms\Components\Fieldset::make('Brand')
-                                        ->schema([
-                                            Forms\Components\Select::make('Brand')
-                                                ->relationship('brand','name')
-                                                ->columnSpan('full')
-                                        ]),
-                                    Forms\Components\Fieldset::make('Product Category')
-                                        ->schema([
-                                            Forms\Components\Select::make('Product Category')
-                                                ->relationship('productCategory','name')
-                                                ->columnSpan('full')
-                                            ]),
-                                    ]),
+                                Forms\Components\Tabs\Tab::make('Details')->schema([
+                                    Forms\Components\TextInput::make('name')->columnSpan('full'),
+                                    Forms\Components\Textarea::make('description')->columnSpan('full'),
+                                    Forms\Components\Toggle::make('status')->label('Published'),
+                                ]),
+                                Forms\Components\Tabs\Tab::make('Images')->schema([
+                                    SpatieMediaLibraryFileUpload::make('attachments')->columnSpan('full')->multiple()
+                                ]),
                                 Forms\Components\Tabs\Tab::make('Adding Variants')
                                 ->schema([
                                     Forms\Components\Repeater::make('variants')
@@ -62,15 +67,26 @@ class ProductResource extends Resource
                                                 Forms\Components\TextInput::make('gtin')->columnSpan(1),
                                                 Forms\Components\TextInput::make('mpn')->columnSpan(1),
                                                 Forms\Components\TextInput::make('ean')->columnSpan(1),
-                                                // Forms\Components\MultiSelect::make('values')
-                                                //     ->relationship('values', 'name')
-                                                //     ->getOptionLabelFromRecordUsing(fn (Model $record) => ProductOption::find($record->product_option_id)->name." - {$record->name}")
+                                                
+                                                /**
+                                                 * Best Configuration for adding variants until now
+                                                 */
                                                 Forms\Components\CheckboxList::make('values')
-                                                    ->relationship('values', 'product_option_id')
+                                                    ->relationship('values', 'name')
                                                     ->getOptionLabelFromRecordUsing(fn (Model $record) => ProductOption::find($record->product_option_id)->name." - {$record->name}")
-                                                    ->disabled()
                                                     ->helperText('Please choose One Value per option. e.g. use blue for colors then add a new variant for other colors')
+                                                    ->hidden(),
+                                                    
+                                                /**
+                                                 * end of the best configuration
+                                                 */
+
+                                                // Forms\Components\KeyValue::make('values')
+                                                //     ->relationship('values','name')
+                                                //     ->columnSpan('full')
+
                                                 ])
+
                                             
                                             ]),
                                         ]),
@@ -132,7 +148,8 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name'),
+                SpatieMediaLibraryImageColumn::make('attachments')
             ])
             ->filters([
                 //

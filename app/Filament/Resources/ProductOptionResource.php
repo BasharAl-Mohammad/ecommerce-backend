@@ -19,6 +19,8 @@ class ProductOptionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
+    protected static ?string $navigationGroup = 'Products Management';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -29,7 +31,7 @@ class ProductOptionResource extends Resource
                         ->relationship('values')
                         ->schema([
                             Forms\Components\TextInput::make('name')
-                    ])
+                    ])->hiddenOn('edit')
                 ])
             ]);
     }
@@ -38,7 +40,7 @@ class ProductOptionResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name'),
             ])
             ->filters([
                 //
@@ -54,7 +56,7 @@ class ProductOptionResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ValuesRelationManager::class
         ];
     }
     
